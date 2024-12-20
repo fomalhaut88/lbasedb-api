@@ -1,0 +1,8 @@
+[package]
+name = "sf-dataset"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+actix-web = "4.9.0"
+lbase2 = { path = "/home/alexander-mt/Development/lbase2" }
