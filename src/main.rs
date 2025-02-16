@@ -1,18 +1,19 @@
+mod utils;
 mod config;
-mod connection;
+mod appdata;
 mod resource;
 
 use actix_web::{get, web, App, HttpResponse, HttpServer, Responder};
+use tokio::sync::Mutex;
 
 use crate::config::Config;
-use crate::connection::Connection;
-use crate::resource::{load_resource_data, load_resource_feed, load_resource_col, 
-                      load_resource_size};
+use crate::appdata::AppData;
+use crate::resource::*;
 
 
 #[get("/")]
 async fn home() -> impl Responder {
-    HttpResponse::Ok().body("Home")
+    HttpResponse::Ok().body("Home\n")
 }
 
 
@@ -20,11 +21,12 @@ async fn home() -> impl Responder {
 async fn main() -> std::io::Result<()> {
     let config = Config::new();
 
-    let server = HttpServer::new(|| {
-        let conn = Connection::new();
-        let app_data = web::Data::new(conn);
+    let instance = AppData::new().await?;
+    let appdata = web::Data::new(Mutex::new(instance));
+
+    let server = HttpServer::new(move || {
         App::new()
-            .app_data(app_data)
+            .app_data(appdata.clone())
             .service(home)
             .service(load_resource_data())
             .service(load_resource_feed())
