@@ -32,6 +32,7 @@ async fn main() -> std::io::Result<()> {
             .service(load_resource_feed())
             .service(load_resource_col())
             .service(load_resource_size())
+            .service(load_resource_raw())
     })
         .workers(config.workers)
         .bind((config.host, config.port))?;
