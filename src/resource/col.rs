@@ -32,13 +32,6 @@ async fn push_view(appdata: WebAppData, query: web::Query<Query>, json: web::Jso
 }
 
 
-// async fn save_view(appdata: WebAppData, query: web::Query<Item>, json: web::Json<Item>) -> APIResult {
-//     let db = &mut appdata.lock().await.db;
-//     db.feed_rename(&query.name, &json.name).await?;
-//     Ok(HttpResponse::NoContent().finish())
-// }
-
-
 async fn patch_view(appdata: WebAppData, query: web::Query<Query>, json: web::Json<Item>) -> APIResult {
     let db = &mut appdata.lock().await.db;
     db.col_rename(&query.feed, &query.name.clone().unwrap(), &json.name).await?;
@@ -57,7 +50,6 @@ pub fn load_resource_col() -> Resource {
     web::resource("/col")
         .route(web::get().to(get_view))
         .route(web::post().to(push_view))
-        // .route(web::put().to(save_view))
         .route(web::patch().to(patch_view))
         .route(web::delete().to(delete_view))
 }
