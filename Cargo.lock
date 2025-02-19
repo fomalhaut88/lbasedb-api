@@ -748,7 +748,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d4345964bb142484797b161f473a503a434de77149dd8c7427788c6e13379388"
 
 [[package]]
-name = "lbase2"
+name = "lbasedb"
 version = "0.1.0"
 dependencies = [
  "base64",
@@ -1108,7 +1108,7 @@ name = "sf-dataset"
 version = "0.1.0"
 dependencies = [
  "actix-web",
- "lbase2",
+ "lbasedb",
  "serde",
  "serde_qs",
  "tokio",

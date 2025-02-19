@@ -1,15 +1,15 @@
 use tokio::io::Result as TokioResult;
-use lbase2::Connection;
+use lbasedb::Conn;
 
 
 pub struct AppData {
-    pub db: Connection,
+    pub db: Conn,
 }
 
 
 impl AppData {
     pub async fn new() -> TokioResult<Self> {
-        let db = Connection::new("./tmp/db").await?;
+        let db = Conn::new("./tmp/db").await?;
         Ok(Self { db })
     }
 }

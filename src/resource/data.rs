@@ -2,7 +2,7 @@ use actix_web::{web, HttpResponse, Resource, HttpRequest};
 use serde::{Serialize, Deserialize};
 use serde_qs;
 
-use lbase2::dataset::Dataset;
+use lbasedb::dataset::Dataset;
 
 use crate::utils::*;
 
