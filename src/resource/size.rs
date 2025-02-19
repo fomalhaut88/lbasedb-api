@@ -1,5 +1,5 @@
 use actix_web::{web, HttpResponse, Resource};
-use serde::Deserialize;
+use serde::{Serialize, Deserialize};
 
 use crate::utils::*;
 
@@ -10,7 +10,7 @@ struct Query {
 }
 
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
 struct Item {
     size: usize,
 }
@@ -18,8 +18,10 @@ struct Item {
 
 async fn get_view(appdata: WebAppData, query: web::Query<Query>) -> APIResult {
     let db = &appdata.lock().await.db;
-    let body = format!("Size: {:?}", db.size_get(&query.feed)?);
-    Ok(HttpResponse::Ok().body(body))
+    let item = Item {
+        size: db.size_get(&query.feed)?,
+    };
+    Ok(HttpResponse::Ok().json(item))
 }
 
 

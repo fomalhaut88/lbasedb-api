@@ -29,18 +29,6 @@ async fn get_view(appdata: WebAppData, req: HttpRequest) -> APIResult {
 }
 
 
-// async fn get_view(appdata: WebAppData, query: web::Query<Query>) -> APIResult {
-//     let db = &mut appdata.lock().await.db;
-//     let ds = db.data_get(
-//         &query.feed,
-//         query.ix.unwrap(),
-//         query.size.unwrap(),
-//         &query.col.clone().unwrap_or(vec![]),
-//     ).await?;
-//     Ok(HttpResponse::Ok().json(ds))
-// }
-
-
 async fn push_view(appdata: WebAppData, query: web::Query<Query>, ds: web::Json<Dataset>) -> APIResult {
     let db = &mut appdata.lock().await.db;
     db.data_push(&query.feed, &ds).await?;

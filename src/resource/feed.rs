@@ -1,10 +1,10 @@
 use actix_web::{web, HttpResponse, Resource};
-use serde::Deserialize;
+use serde::{Serialize, Deserialize};
 
 use crate::utils::*;
 
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
 struct Item {
     name: String,
 }
@@ -12,8 +12,10 @@ struct Item {
 
 async fn get_view(appdata: WebAppData) -> APIResult {
     let db = &appdata.lock().await.db;
-    let body = format!("Feeds: {:?}", db.feed_list());
-    Ok(HttpResponse::Ok().body(body))
+    let items = db.feed_list().iter()
+        .map(|feed_item| Item { name: feed_item.get_name() })
+        .collect::<Vec<Item>>();
+    Ok(HttpResponse::Ok().json(items))
 }
 
 

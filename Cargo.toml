@@ -1,11 +1,12 @@
 [package]
 name = "sf-dataset"
 version = "0.1.0"
-edition = "2024"
+edition = "2021"
 
 [dependencies]
 actix-web = "4.9.0"
 tokio = { version = "1.40.0", features = ["full"] }
-lbasedb = { path = "/home/alexander-mt/Development/lbasedb" }
+lbasedb = { git = "https://github.com/fomalhaut88/lbasedb.git", branch = "dev" }
+# lbasedb = { path = "../lbasedb" }
 serde = { version = "1.0.217", features = ["derive"] }
 serde_qs = "0.13.0"

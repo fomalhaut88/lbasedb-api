@@ -1,6 +1,5 @@
 use actix_web::{web, HttpResponse, Resource};
-use serde::Deserialize;
-use lbasedb::utils::bytes_to_str;
+use serde::{Serialize, Deserialize};
 
 use crate::utils::*;
 
@@ -12,7 +11,7 @@ struct Query {
 }
 
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
 struct Item {
     name: String,
     datatype: Option<String>,
@@ -21,12 +20,12 @@ struct Item {
 
 async fn get_view(appdata: WebAppData, query: web::Query<Query>) -> APIResult {
     let db = &appdata.lock().await.db;
-    let col_items = db.col_list(&query.feed)?;
-    let col_names = col_items.iter()
-        .map(|item| bytes_to_str(&item.name).to_string())
-        .collect::<Vec<String>>();
-    let body = format!("Cols: {:?}", col_names);
-    Ok(HttpResponse::Ok().body(body))
+    let items = db.col_list(&query.feed)?.iter()
+        .map(|col_item| Item {
+            name: col_item.get_name(), 
+            datatype: Some(col_item.get_datatype()),
+        }).collect::<Vec<Item>>();
+    Ok(HttpResponse::Ok().json(items))
 }
 
 
