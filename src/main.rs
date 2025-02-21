@@ -4,7 +4,7 @@ mod appdata;
 mod resource;
 
 use actix_web::{get, web, App, HttpResponse, HttpServer, Responder};
-use tokio::sync::Mutex;
+use tokio::sync::RwLock;
 
 use crate::config::Config;
 use crate::appdata::AppData;
@@ -22,7 +22,7 @@ async fn main() -> std::io::Result<()> {
     let config = Config::new();
 
     let instance = AppData::new().await?;
-    let appdata = web::Data::new(Mutex::new(instance));
+    let appdata = web::Data::new(RwLock::new(instance));
 
     let server = HttpServer::new(move || {
         App::new()
