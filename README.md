@@ -21,7 +21,23 @@ Source code: https://github.com/fomalhaut88/lbasedb
 
 ## Run in Docker
 
-...
+1. Pull the docker image:
+
+```
+docker pull fomalhaut88/lbasedb-api
+```
+
+2. Run the container (do not forget to set `$PATH_TO_DB_DIR`):
+
+```
+sudo docker run \
+    -p 8080:8080 \
+    --restart=always \
+    --volume $PATH_TO_DB_DIR:/app/db \
+    --name lbasedb-api-app \
+    --env WORKERS=16 \
+    -d fomalhaut88/lbasedb-api
+```
 
 ## API description
 
