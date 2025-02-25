@@ -30,7 +30,7 @@ docker pull fomalhaut88/lbasedb-api
 2. Run the container (do not forget to set `$PATH_TO_DB_DIR`):
 
 ```
-sudo docker run \
+docker run \
     -p 8080:8080 \
     --restart=always \
     --volume $PATH_TO_DB_DIR:/app/db \
