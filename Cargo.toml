@@ -1,7 +1,11 @@
 [package]
-name = "sf-dataset"
+name = "lbasedb-api"
 version = "0.1.0"
 edition = "2021"
+authors = ["Alexander Khlebushchev"]
+license = "MIT"
+repository = "https://github.com/fomalhaut88/lbasedb-api"
+description = "REST API for the Lbasedb DBMS."
 
 [dependencies]
 actix-web = "4.9.0"

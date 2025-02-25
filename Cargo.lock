@@ -758,6 +758,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "lbasedb-api"
+version = "0.1.0"
+dependencies = [
+ "actix-web",
+ "lbasedb",
+ "serde",
+ "serde_qs",
+ "tokio",
+]
+
+[[package]]
 name = "libc"
 version = "0.2.169"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1102,17 +1113,6 @@ dependencies = [
  "itoa",
  "ryu",
  "serde",
-]
-
-[[package]]
-name = "sf-dataset"
-version = "0.1.0"
-dependencies = [
- "actix-web",
- "lbasedb",
- "serde",
- "serde_qs",
- "tokio",
 ]
 
 [[package]]
