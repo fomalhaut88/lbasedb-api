@@ -17,7 +17,7 @@ impl Config {
                                   .parse().unwrap(),
             workers: env::var("WORKERS").unwrap_or("1".to_string())
                                         .parse().unwrap(),
-            data_path: env::var("DATA_PATH").expect("DATA_PATH"),
+            data_path: env::var("DATA_PATH").unwrap_or("./tmp/db".to_string()),
         }
     }
 }
