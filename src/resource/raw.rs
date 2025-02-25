@@ -14,8 +14,7 @@ struct Query {
 
 
 async fn get_view(appdata: WebAppData, query: web::Query<Query>) -> APIResult {
-    let db = &appdata.read().await.db;
-    let block = db.raw_get(
+    let block = appdata.db.raw_get(
         &query.feed,
         &query.col,
         query.ix,
@@ -27,8 +26,7 @@ async fn get_view(appdata: WebAppData, query: web::Query<Query>) -> APIResult {
 
 async fn update_view(appdata: WebAppData, query: web::Query<Query>, 
                      payload: web::Bytes) -> APIResult {
-    let db = &appdata.read().await.db;
-    db.raw_set(
+    appdata.db.raw_set(
         &query.feed,
         &query.col,
         query.ix,

@@ -18,8 +18,7 @@ struct Query {
 
 async fn get_view(appdata: WebAppData, req: HttpRequest) -> APIResult {
     let query = serde_qs::from_str::<Query>(&req.query_string()).unwrap();
-    let db = &appdata.read().await.db;
-    let ds = db.data_get(
+    let ds = appdata.db.data_get(
         &query.feed,
         query.ix.unwrap(),
         query.size.unwrap(),
@@ -31,24 +30,21 @@ async fn get_view(appdata: WebAppData, req: HttpRequest) -> APIResult {
 
 async fn push_view(appdata: WebAppData, query: web::Query<Query>, 
                    ds: web::Json<Dataset>) -> APIResult {
-    let db = &appdata.read().await.db;
-    db.data_push(&query.feed, &ds).await?;
+    appdata.db.data_push(&query.feed, &ds).await?;
     Ok(HttpResponse::NoContent().finish())
 }
 
 
 async fn save_view(appdata: WebAppData, query: web::Query<Query>, 
                    ds: web::Json<Dataset>) -> APIResult {
-    let db = &appdata.read().await.db;
-    db.data_save(&query.feed, query.ix.unwrap(), &ds).await?;
+    appdata.db.data_save(&query.feed, query.ix.unwrap(), &ds).await?;
     Ok(HttpResponse::NoContent().finish())
 }
 
 
 async fn patch_view(appdata: WebAppData, query: web::Query<Query>, 
                     ds: web::Json<Dataset>) -> APIResult {
-    let db = &appdata.read().await.db;
-    db.data_patch(&query.feed, query.ix.unwrap(), &ds).await?;
+    appdata.db.data_patch(&query.feed, query.ix.unwrap(), &ds).await?;
     Ok(HttpResponse::NoContent().finish())
 }
 

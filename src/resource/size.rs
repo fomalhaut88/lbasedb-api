@@ -17,9 +17,8 @@ struct Item {
 
 
 async fn get_view(appdata: WebAppData, query: web::Query<Query>) -> APIResult {
-    let db = &appdata.read().await.db;
     let item = Item {
-        size: db.size_get(&query.feed).await?,
+        size: appdata.db.size_get(&query.feed).await?,
     };
     Ok(HttpResponse::Ok().json(item))
 }
@@ -27,8 +26,7 @@ async fn get_view(appdata: WebAppData, query: web::Query<Query>) -> APIResult {
 
 async fn save_view(appdata: WebAppData, query: web::Query<Query>, 
                    json: web::Json<Item>) -> APIResult {
-    let db = &appdata.read().await.db;
-    db.size_set(&query.feed, json.size).await?;
+    appdata.db.size_set(&query.feed, json.size).await?;
     Ok(HttpResponse::NoContent().finish())
 }
 

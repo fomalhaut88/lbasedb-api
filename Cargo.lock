@@ -750,7 +750,7 @@ checksum = "d4345964bb142484797b161f473a503a434de77149dd8c7427788c6e13379388"
 [[package]]
 name = "lbasedb"
 version = "0.1.1"
-source = "git+https://github.com/fomalhaut88/lbasedb.git?branch=dev#78d93e3bd37a661df4d15e02e46934df618a55f8"
+source = "git+https://github.com/fomalhaut88/lbasedb.git?branch=dev#c3ccb7b96120acbe1a33cd5c42268ac582700412"
 dependencies = [
  "base64",
  "serde",

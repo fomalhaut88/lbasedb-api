@@ -11,8 +11,7 @@ struct Item {
 
 
 async fn get_view(appdata: WebAppData) -> APIResult {
-    let db = &appdata.read().await.db;
-    let items = db.feed_list().await.iter()
+    let items = appdata.db.feed_list().await.iter()
         .map(|feed_item| Item { name: feed_item.get_name() })
         .collect::<Vec<Item>>();
     Ok(HttpResponse::Ok().json(items))
@@ -20,24 +19,21 @@ async fn get_view(appdata: WebAppData) -> APIResult {
 
 
 async fn push_view(appdata: WebAppData, json: web::Json<Item>) -> APIResult {
-    let db = &appdata.write().await.db;
-    db.feed_add(&json.name).await?;
+    appdata.db.feed_add(&json.name).await?;
     Ok(HttpResponse::Created().finish())
 }
 
 
 async fn patch_view(appdata: WebAppData, query: web::Query<Item>, 
                     json: web::Json<Item>) -> APIResult {
-    let db = &appdata.write().await.db;
-    db.feed_rename(&query.name, &json.name).await?;
+    appdata.db.feed_rename(&query.name, &json.name).await?;
     Ok(HttpResponse::NoContent().finish())
 }
 
 
 async fn delete_view(appdata: WebAppData, 
                      query: web::Query<Item>) -> APIResult {
-    let db = &appdata.write().await.db;
-    db.feed_remove(&query.name).await?;
+    appdata.db.feed_remove(&query.name).await?;
     Ok(HttpResponse::NoContent().finish())
 }
 

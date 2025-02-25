@@ -19,8 +19,7 @@ struct Item {
 
 
 async fn get_view(appdata: WebAppData, query: web::Query<Query>) -> APIResult {
-    let db = &appdata.read().await.db;
-    let items = db.col_list(&query.feed).await?.iter()
+    let items = appdata.db.col_list(&query.feed).await?.iter()
         .map(|col_item| Item {
             name: col_item.get_name(), 
             datatype: Some(col_item.get_datatype()),
@@ -31,24 +30,23 @@ async fn get_view(appdata: WebAppData, query: web::Query<Query>) -> APIResult {
 
 async fn push_view(appdata: WebAppData, query: web::Query<Query>, 
                    json: web::Json<Item>) -> APIResult {
-    let db = &appdata.write().await.db;
-    db.col_add(&query.feed, &json.name, &json.datatype.clone().unwrap()).await?;
+    appdata.db.col_add(&query.feed, &json.name, 
+                       &json.datatype.clone().unwrap()).await?;
     Ok(HttpResponse::Created().finish())
 }
 
 
 async fn patch_view(appdata: WebAppData, query: web::Query<Query>, 
                     json: web::Json<Item>) -> APIResult {
-    let db = &appdata.write().await.db;
-    db.col_rename(&query.feed, &query.name.clone().unwrap(), &json.name).await?;
+    appdata.db.col_rename(&query.feed, &query.name.clone().unwrap(), 
+                          &json.name).await?;
     Ok(HttpResponse::NoContent().finish())
 }
 
 
 async fn delete_view(appdata: WebAppData, 
                      query: web::Query<Query>) -> APIResult {
-    let db = &appdata.write().await.db;
-    db.col_remove(&query.feed, &query.name.clone().unwrap()).await?;
+    appdata.db.col_remove(&query.feed, &query.name.clone().unwrap()).await?;
     Ok(HttpResponse::NoContent().finish())
 }
 
