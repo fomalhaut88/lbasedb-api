@@ -64,7 +64,7 @@ docker run \
 
 | Variable | Description | Default |
 |---|---|---|
-| `DATA_PATH` | Path to the directory for the data. | **Required!** |
+| `DATA_PATH` | Path to the directory for the data. | `./tmp/db` |
 | `WORKERS` | Number of workers to process. | `1` |
 | `HOST` | Host to deploy. | `localhost` |
 | `PORT` | Port to deploy. | `8080` |
