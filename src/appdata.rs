@@ -8,8 +8,8 @@ pub struct AppData {
 
 
 impl AppData {
-    pub async fn new() -> TokioResult<Self> {
-        let db = Conn::new("./tmp/db").await?;
+    pub async fn new(data_path: &str) -> TokioResult<Self> {
+        let db = Conn::new(data_path).await?;
         Ok(Self { db })
     }
 }
