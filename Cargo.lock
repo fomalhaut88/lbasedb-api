@@ -749,9 +749,9 @@ checksum = "d4345964bb142484797b161f473a503a434de77149dd8c7427788c6e13379388"
 
 [[package]]
 name = "lbasedb"
-version = "0.1.6"
+version = "0.1.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "21971a3457dd489a967549b67105a2b863f61e59ecfe257187534ca04bc7cb4e"
+checksum = "54986a21f304dc2088da4c97828e75745eadf4a219673b618d3b10149e248f68"
 dependencies = [
  "base64",
  "serde",

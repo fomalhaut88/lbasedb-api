@@ -35,11 +35,17 @@ docker pull fomalhaut88/lbasedb-api
 docker run \
     -p 8080:8080 \
     --restart=always \
+    --ulimit nofile=1024:1024 \
     --volume $PATH_TO_DB_DIR:/app/db \
     --name lbasedb-api-app \
     --env WORKERS=16 \
     -d fomalhaut88/lbasedb-api
 ```
+
+Notice, since Lbasedb keeps an open file for each column, you may need to  
+increase the maximum number of open files allowed (see `ulimit` for details), 
+that is usually 1024 by default. In the example above, the limit is set to 
+1024 as default but it can be greater.
 
 ## API description
 
@@ -56,11 +62,11 @@ docker run \
 | `/raw` | `POST` | Insert raw bytes into the column. | `feed: str` - name of the feed <br> `ix: int` - start index <br> `col: str` - name of columns | binary | |
 | `/feed` | `GET` | List available feeds. | | | `[{"name": "xyz"}]` |
 | `/feed` | `POST` | Add a new feed. | | `{"name": "xyz"}` | |
-| `/feed` | `PUT` | Rename the feed. | `name: str` - name of the feed | `{"name": "xyz2"}` | |
+| `/feed` | `PATCH` | Rename the feed. | `name: str` - name of the feed | `{"name": "xyz2"}` | |
 | `/feed` | `DELETE` | Delete the feed. | `name: str` - name of the feed | | |
 | `/col` | `GET` | List available columns in the feed. | `feed: str` - name of the feed | | `[{"name": "y", "datatype": "Int64"}]` |
 | `/col` | `POST` | Add a new column. | `feed: str` - name of the feed | `{"name": "x", "datatype": "Int64"}` | |
-| `/col` | `PUT` | Rename the column. | `feed: str` - name of the feed <br> `name: str` - name of the column | `{"name": "y"}` | |
+| `/col` | `PATCH` | Rename the column. | `feed: str` - name of the feed <br> `name: str` - name of the column | `{"name": "y"}` | |
 | `/col` | `DELETE` | Delete the column. | `feed: str` - name of the feed <br> `name: str` - name of the column | | |
 
 ## Environment variables

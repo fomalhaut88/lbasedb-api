@@ -1,6 +1,6 @@
 [package]
 name = "lbasedb-api"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 authors = ["Alexander Khlebushchev"]
 license = "MIT"
@@ -10,6 +10,6 @@ description = "REST API for the Lbasedb DBMS."
 [dependencies]
 actix-web = "4.9.0"
 tokio = { version = "1.43.0", features = ["full"] }
-lbasedb = { version = "0.1.6" }
+lbasedb = { version = "0.1.7" }
 serde = { version = "1.0.218", features = ["derive"] }
 serde_qs = "0.13.0"
