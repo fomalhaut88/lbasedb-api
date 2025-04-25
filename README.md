@@ -26,20 +26,20 @@ Source code: https://github.com/fomalhaut88/lbasedb
 1. Pull the docker image:
 
 ```
-docker pull fomalhaut88/lbasedb-api
+docker pull fomalhaut88/lbasedb
 ```
 
-2. Run the container (do not forget to set `$PATH_TO_DB_DIR`):
+2. Run the container:
 
 ```
 docker run \
     -p 8080:8080 \
     --restart=always \
     --ulimit nofile=1024:1024 \
-    --volume $PATH_TO_DB_DIR:/app/db \
-    --name lbasedb-api-app \
+    --volume /tmp/lbasedb:/app/db \
+    --name lbasedb-app \
     --env WORKERS=16 \
-    -d fomalhaut88/lbasedb-api
+    -d fomalhaut88/lbasedb
 ```
 
 Notice, since Lbasedb keeps an open file for each column, you may need to  
