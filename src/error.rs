@@ -5,7 +5,18 @@ use actix_web::http::{StatusCode, header::ContentType};
 
 #[derive(Debug, Serialize)]
 pub struct JsonError {
-    pub detail: String,
+    detail: String,
+}
+
+
+impl JsonError {
+    pub fn new(detail: String) -> Self {
+        Self { detail }
+    }
+
+    pub fn from_str(detail: &str) -> Self {
+        Self::new(detail.to_string())
+    }
 }
 
 
