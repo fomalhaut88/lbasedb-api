@@ -6,6 +6,7 @@ pub struct Config {
     pub port: u16,
     pub workers: usize,
     pub data_path: String,
+    pub payload_limit: usize,
 }
 
 
@@ -18,6 +19,9 @@ impl Config {
             workers: env::var("WORKERS").unwrap_or("1".to_string())
                                         .parse().unwrap(),
             data_path: env::var("DATA_PATH").unwrap_or("./tmp/db".to_string()),
+            payload_limit: env::var("PAYLOAD_LIMIT")
+                                .unwrap_or("1073741824".to_string())
+                                .parse().unwrap(),
         }
     }
 }

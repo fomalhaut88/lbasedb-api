@@ -77,3 +77,4 @@ that is usually 1024 by default. In the example above, the limit is set to
 | `WORKERS` | Number of workers to process. | `1` |
 | `HOST` | Host to deploy. | `localhost` |
 | `PORT` | Port to deploy. | `8080` |
+| `PAYLOAD_LIMIT` | Maximum payload size to request in bytes. | `1073741824` (or 1 GB) |

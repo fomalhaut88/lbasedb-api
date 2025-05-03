@@ -52,6 +52,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .wrap(Logger::default())
             .wrap(cors)
+            .app_data(web::JsonConfig::default().limit(config.payload_limit))
             .app_data(appdata.clone())
             .service(version_view)
             .service(load_resource_data())
