@@ -17,7 +17,9 @@ struct Query {
 
 
 async fn get_view(appdata: WebAppData, req: HttpRequest) -> APIResult {
-    let query = serde_qs::from_str::<Query>(&req.query_string()).unwrap();
+    let qs = req.query_string();
+    let qs = qs.replace("%5B%5D=", "[]=");  // Force `[]` if they are replaced
+    let query = serde_qs::from_str::<Query>(&qs).unwrap();
     let ds = appdata.db.data_get(
         &query.feed,
         query.ix.unwrap(),
