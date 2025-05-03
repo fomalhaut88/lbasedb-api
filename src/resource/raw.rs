@@ -2,6 +2,7 @@ use actix_web::{web, HttpResponse, Resource};
 use serde::{Serialize, Deserialize};
 
 use crate::utils::*;
+use crate::error::JsonError;
 
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -14,12 +15,9 @@ struct Query {
 
 
 async fn get_view(appdata: WebAppData, query: web::Query<Query>) -> APIResult {
-    let block = appdata.db.raw_get(
-        &query.feed,
-        &query.col,
-        query.ix,
-        query.size.unwrap()
-    ).await?;
+    let size = query.size.ok_or(JsonError::from_str("size required"))?;
+    let block = appdata.db.raw_get(&query.feed, &query.col, query.ix, 
+                                   size).await?;
     Ok(HttpResponse::Ok().body(block))
 }
 

@@ -2,6 +2,7 @@ use actix_web::{web, HttpResponse, Resource};
 use serde::{Serialize, Deserialize};
 
 use crate::utils::*;
+use crate::error::JsonError;
 
 
 #[derive(Deserialize)]
@@ -30,23 +31,27 @@ async fn get_view(appdata: WebAppData, query: web::Query<Query>) -> APIResult {
 
 async fn push_view(appdata: WebAppData, query: web::Query<Query>, 
                    json: web::Json<Item>) -> APIResult {
-    appdata.db.col_add(&query.feed, &json.name, 
-                       &json.datatype.clone().unwrap()).await?;
+    let datatype = json.datatype.as_ref()
+        .ok_or(JsonError::from_str("datatype required"))?;
+    appdata.db.col_add(&query.feed, &json.name, datatype).await?;
     Ok(HttpResponse::Created().finish())
 }
 
 
 async fn patch_view(appdata: WebAppData, query: web::Query<Query>, 
                     json: web::Json<Item>) -> APIResult {
-    appdata.db.col_rename(&query.feed, &query.name.clone().unwrap(), 
-                          &json.name).await?;
+    let name = query.name.as_ref()
+        .ok_or(JsonError::from_str("name required"))?;
+    appdata.db.col_rename(&query.feed, name, &json.name).await?;
     Ok(HttpResponse::NoContent().finish())
 }
 
 
 async fn delete_view(appdata: WebAppData, 
                      query: web::Query<Query>) -> APIResult {
-    appdata.db.col_remove(&query.feed, &query.name.clone().unwrap()).await?;
+    let name = query.name.as_ref()
+        .ok_or(JsonError::from_str("name required"))?;
+    appdata.db.col_remove(&query.feed, name).await?;
     Ok(HttpResponse::NoContent().finish())
 }
 

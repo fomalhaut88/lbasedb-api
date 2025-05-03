@@ -1,13 +1,13 @@
 use actix_web::{web, HttpResponse, Resource, HttpRequest};
-use serde::{Serialize, Deserialize};
-use serde_qs;
+use serde::Deserialize;
 
 use lbasedb::dataset::Dataset;
 
 use crate::utils::*;
+use crate::error::JsonError;
 
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Deserialize)]
 struct Query {
     feed: String,
     ix: Option<usize>,
@@ -17,15 +17,11 @@ struct Query {
 
 
 async fn get_view(appdata: WebAppData, req: HttpRequest) -> APIResult {
-    let qs = req.query_string();
-    let qs = qs.replace("%5B%5D=", "[]=");  // Force `[]` if they are replaced
-    let query = serde_qs::from_str::<Query>(&qs).unwrap();
-    let ds = appdata.db.data_get(
-        &query.feed,
-        query.ix.unwrap(),
-        query.size.unwrap(),
-        &query.col.unwrap_or(vec![]),
-    ).await?;
+    let query: Query = qs_parse(req.query_string())?;
+    let ix = query.ix.ok_or(JsonError::from_str("ix required"))?;
+    let size = query.size.ok_or(JsonError::from_str("size required"))?;
+    let cols = query.col.unwrap_or(vec![]);
+    let ds = appdata.db.data_get(&query.feed, ix, size, &cols).await?;
     Ok(HttpResponse::Ok().json(ds))
 }
 
@@ -39,14 +35,16 @@ async fn push_view(appdata: WebAppData, query: web::Query<Query>,
 
 async fn save_view(appdata: WebAppData, query: web::Query<Query>, 
                    ds: web::Json<Dataset>) -> APIResult {
-    appdata.db.data_save(&query.feed, query.ix.unwrap(), &ds).await?;
+    let ix = query.ix.ok_or(JsonError::from_str("ix required"))?;
+    appdata.db.data_save(&query.feed, ix, &ds).await?;
     Ok(HttpResponse::NoContent().finish())
 }
 
 
 async fn patch_view(appdata: WebAppData, query: web::Query<Query>, 
                     ds: web::Json<Dataset>) -> APIResult {
-    appdata.db.data_patch(&query.feed, query.ix.unwrap(), &ds).await?;
+    let ix = query.ix.ok_or(JsonError::from_str("ix required"))?;
+    appdata.db.data_patch(&query.feed, ix, &ds).await?;
     Ok(HttpResponse::NoContent().finish())
 }
 
