@@ -51,7 +51,7 @@ that is usually 1024 by default. In the example above, the limit is set to
 
 | Path | Method | Description | Params | Input body example | Output body example |
 |---|---|---|---|---|---|
-| `/version` | `GET` | Version of API. | | | `0.1.6` |
+| `/version` | `GET` | Version of API. | | | `0.1.7` |
 | `/data` | `GET` | Get JSON dataset. | `feed: str` - name of the feed <br> `ix: int` - start index <br> `size: int` - number of rows <br> `col: [str]` - names of columns | | `{"x": [2, 3]}` |
 | `/data` | `POST` | Push JSON dataset into the end. | `feed: str` - name of the feed | `{"x": [2, 3]}` | |
 | `/data` | `PUT` | Update JSON dataset from the index. Columns not listed will be zeroed. | `feed: str` - name of the feed <br> `ix: int` - start index | `{"x": [2, 3]}` | |
