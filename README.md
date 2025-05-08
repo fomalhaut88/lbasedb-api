@@ -36,7 +36,7 @@ docker run \
     -p 8080:8080 \
     --restart=always \
     --ulimit nofile=1024:1024 \
-    --volume /tmp/lbasedb:/app/db \
+    --volume /var/lib/lbasedb:/app/db \
     --name lbasedb-app \
     --env WORKERS=16 \
     -d fomalhaut88/lbasedb
