@@ -895,9 +895,9 @@ checksum = "d4345964bb142484797b161f473a503a434de77149dd8c7427788c6e13379388"
 
 [[package]]
 name = "lbasedb"
-version = "0.1.8"
+version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "58762168a3985ba7f53462d4a35bbdb5d5820a3759a6b4c665a20bb44dd03e4b"
+checksum = "7a0c333340269ab00235a281a17511248d1e938f1eb9d1522d7682675d0e9bf2"
 dependencies = [
  "base64",
  "regex",
@@ -907,7 +907,7 @@ dependencies = [
 
 [[package]]
 name = "lbasedb-api"
-version = "0.1.7"
+version = "0.1.8"
 dependencies = [
  "actix-cors",
  "actix-web",

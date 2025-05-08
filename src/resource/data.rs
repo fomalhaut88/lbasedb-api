@@ -18,8 +18,8 @@ struct Query {
 
 async fn get_view(appdata: WebAppData, req: HttpRequest) -> APIResult {
     let query: Query = qs_parse(req.query_string())?;
-    let ix = query.ix.ok_or(JsonError::from_str("ix required"))?;
-    let size = query.size.ok_or(JsonError::from_str("size required"))?;
+    let ix = query.ix.ok_or(JsonError::new("param required", "ix"))?;
+    let size = query.size.ok_or(JsonError::new("param required", "size"))?;
     let cols = query.col.unwrap_or(vec![]);
     let ds = appdata.db.data_get(&query.feed, ix, size, &cols).await?;
     Ok(HttpResponse::Ok().json(ds))
@@ -35,7 +35,7 @@ async fn push_view(appdata: WebAppData, query: web::Query<Query>,
 
 async fn save_view(appdata: WebAppData, query: web::Query<Query>, 
                    ds: web::Json<Dataset>) -> APIResult {
-    let ix = query.ix.ok_or(JsonError::from_str("ix required"))?;
+    let ix = query.ix.ok_or(JsonError::new("param required", "ix"))?;
     appdata.db.data_save(&query.feed, ix, &ds).await?;
     Ok(HttpResponse::NoContent().finish())
 }
@@ -43,7 +43,7 @@ async fn save_view(appdata: WebAppData, query: web::Query<Query>,
 
 async fn patch_view(appdata: WebAppData, query: web::Query<Query>, 
                     ds: web::Json<Dataset>) -> APIResult {
-    let ix = query.ix.ok_or(JsonError::from_str("ix required"))?;
+    let ix = query.ix.ok_or(JsonError::new("param required", "ix"))?;
     appdata.db.data_patch(&query.feed, ix, &ds).await?;
     Ok(HttpResponse::NoContent().finish())
 }

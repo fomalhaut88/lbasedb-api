@@ -15,7 +15,7 @@ struct Query {
 
 
 async fn get_view(appdata: WebAppData, query: web::Query<Query>) -> APIResult {
-    let size = query.size.ok_or(JsonError::from_str("size required"))?;
+    let size = query.size.ok_or(JsonError::new("param required", "size"))?;
     let block = appdata.db.raw_get(&query.feed, &query.col, query.ix, 
                                    size).await?;
     Ok(HttpResponse::Ok().body(block))
