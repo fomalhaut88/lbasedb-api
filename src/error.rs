@@ -1,3 +1,5 @@
+use std::io::Error;
+
 use serde::Serialize;
 use actix_web::{ResponseError, HttpResponse};
 use actix_web::http::{StatusCode, header::ContentType};
@@ -5,31 +7,31 @@ use actix_web::http::{StatusCode, header::ContentType};
 
 #[derive(Debug, Serialize)]
 pub struct JsonError {
+    error: String,
     detail: String,
 }
 
 
 impl JsonError {
-    pub fn new(detail: String) -> Self {
-        Self { detail }
-    }
-
-    pub fn from_str(detail: &str) -> Self {
-        Self::new(detail.to_string())
+    pub fn new(error: &str, detail: &str) -> Self {
+        Self { error: error.to_string(), detail: detail.to_string() }
     }
 }
 
 
 impl std::fmt::Display for JsonError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.detail)
+        write!(f, "{}: {}", self.error, self.detail)
     }
 }
 
 
-impl<E: std::error::Error> From<E> for JsonError {
-    fn from(err: E) -> Self {
-        Self { detail: err.to_string() }
+impl From<Error> for JsonError {
+    fn from(err: Error) -> Self {
+        Self {
+            error: err.kind().to_string(), 
+            detail: err.to_string(),
+        }
     }
 }
 

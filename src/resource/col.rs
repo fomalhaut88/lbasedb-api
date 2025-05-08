@@ -32,7 +32,7 @@ async fn get_view(appdata: WebAppData, query: web::Query<Query>) -> APIResult {
 async fn push_view(appdata: WebAppData, query: web::Query<Query>, 
                    json: web::Json<Item>) -> APIResult {
     let datatype = json.datatype.as_ref()
-        .ok_or(JsonError::from_str("datatype required"))?;
+        .ok_or(JsonError::new("param required", "datatype"))?;
     appdata.db.col_add(&query.feed, &json.name, datatype).await?;
     Ok(HttpResponse::Created().finish())
 }
@@ -41,7 +41,7 @@ async fn push_view(appdata: WebAppData, query: web::Query<Query>,
 async fn patch_view(appdata: WebAppData, query: web::Query<Query>, 
                     json: web::Json<Item>) -> APIResult {
     let name = query.name.as_ref()
-        .ok_or(JsonError::from_str("name required"))?;
+        .ok_or(JsonError::new("param required", "name"))?;
     appdata.db.col_rename(&query.feed, name, &json.name).await?;
     Ok(HttpResponse::NoContent().finish())
 }
@@ -50,7 +50,7 @@ async fn patch_view(appdata: WebAppData, query: web::Query<Query>,
 async fn delete_view(appdata: WebAppData, 
                      query: web::Query<Query>) -> APIResult {
     let name = query.name.as_ref()
-        .ok_or(JsonError::from_str("name required"))?;
+        .ok_or(JsonError::new("param required", "name"))?;
     appdata.db.col_remove(&query.feed, name).await?;
     Ok(HttpResponse::NoContent().finish())
 }
