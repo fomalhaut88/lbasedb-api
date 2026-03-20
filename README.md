@@ -59,7 +59,7 @@ that is usually 1024 by default. In the example above, the limit is set to
 | `/size` | `GET` | Get size of the feed. | `feed: str` - name of the feed | | `{"size": 2}` |
 | `/size` | `PUT` | Resize the feed with all its columns. Last records will be removed or zero records appeared in the end. | `feed: str` - name of the feed | `{"size": 2}` | |
 | `/raw` | `GET` | Get raw bytes in the column. | `feed: str` - name of the feed <br> `ix: int` - start index <br> `size: int` - number of units <br> `col: str` - name of columns | | binary |
-| `/raw` | `POST` | Insert raw bytes into the column. | `feed: str` - name of the feed <br> `ix: int` - start index <br> `col: str` - name of columns | binary | |
+| `/raw` | `POST` | Update raw bytes in the column. It does not push new bytes, so for insertion do resize before. | `feed: str` - name of the feed <br> `ix: int` - start index <br> `col: str` - name of columns | binary | |
 | `/feed` | `GET` | List available feeds. | | | `[{"name": "xyz"}]` |
 | `/feed` | `POST` | Add a new feed. | | `{"name": "xyz"}` | |
 | `/feed` | `PATCH` | Rename the feed. | `name: str` - name of the feed | `{"name": "xyz2"}` | |
