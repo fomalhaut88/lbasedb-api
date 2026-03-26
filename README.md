@@ -60,6 +60,11 @@ that is usually 1024 by default. In the example above, the limit is set to
 | `/size` | `PUT` | Resize the feed with all its columns. Last records will be removed or zero records appeared in the end. | `feed: str` - name of the feed | `{"size": 2}` | |
 | `/raw` | `GET` | Get raw bytes in the column. | `feed: str` - name of the feed <br> `ix: int` - start index <br> `size: int` - number of units <br> `col: str` - name of columns | | binary |
 | `/raw` | `POST` | Update raw bytes in the column. It does not push new bytes, so for insertion do resize before. | `feed: str` - name of the feed <br> `ix: int` - start index <br> `col: str` - name of columns | binary | |
+| `/bytes` | `GET` | Get bytes dataset. | `feed: str` - name of the feed <br> `ix: int` - start index <br> `size: int` - number of rows <br> `col: [str]` - names of columns | | binary |
+| `/bytes` | `POST` | Push bytes dataset into the end. | `feed: str` - name of the feed <br> `col: [str]` - names of columns | binary | |
+| `/bytes` | `PUT` | Update bytes dataset from the index. Columns not listed will be zeroed. | `feed: str` - name of the feed <br> `ix: int` - start index <br> `col: [str]` - names of columns | binary | |
+| `/bytes` | `PATCH` | Update bytes dataset from the index. Columns not listed will stay the same. | `feed: str` - name of the feed <br> `ix: int` - start index <br> `col: [str]` - names of columns | binary | |
+| `/bytes` | `DELETE` | Set bytes to zero. Columns not listed will stay the same. | `feed: str` - name of the feed <br> `ix: int` - start index <br> `size: int` - number of rows <br> `col: [str]` - names of columns | | |
 | `/feed` | `GET` | List available feeds. | | | `[{"name": "xyz"}]` |
 | `/feed` | `POST` | Add a new feed. | | `{"name": "xyz"}` | |
 | `/feed` | `PATCH` | Rename the feed. | `name: str` - name of the feed | `{"name": "xyz2"}` | |
@@ -68,6 +73,8 @@ that is usually 1024 by default. In the example above, the limit is set to
 | `/col` | `POST` | Add a new column. | `feed: str` - name of the feed | `{"name": "x", "datatype": "Int64"}` | |
 | `/col` | `PATCH` | Rename the column. | `feed: str` - name of the feed <br> `name: str` - name of the column | `{"name": "y"}` | |
 | `/col` | `DELETE` | Delete the column. | `feed: str` - name of the feed <br> `name: str` - name of the column | | |
+
+**Bytes dataset** is a concatenated arrays represented as bytes of each column listed in the request (in `/bytes`). The order of the columns is kept.
 
 ## Environment variables
 
